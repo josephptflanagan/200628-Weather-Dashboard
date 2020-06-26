@@ -11,7 +11,7 @@ function getWeatherData(cityName){
                 var lat = data.coord.lat;
                 var lon = data.coord.lon;
 
-                var uvApiUrl = "http://api.openweathermap.org/data/2.5/uvi?appid=258563bcd408b087604452eb2e20b86f&lat=" + lat + "&lon=" + lon
+                var uvApiUrl = "https://api.openweathermap.org/data/2.5/uvi?appid=258563bcd408b087604452eb2e20b86f&lat=" + lat + "&lon=" + lon
                 
                 //fetch data from the weather api
                 fetch(uvApiUrl).then(function(response){
@@ -51,7 +51,7 @@ function displayWeatherData(data, uvData, cityName){
     var uv = uvData.value;
     var date = uvData.date_iso;
 
-    var iconUrl = "http://openweathermap.org/img/wn/"+ iconID + "@2x.png";
+    var iconUrl = "https://openweathermap.org/img/wn/"+ iconID + "@2x.png";
 
     var formattedDate = date.split("T")[0];
     var dateArr = formattedDate.split("-");

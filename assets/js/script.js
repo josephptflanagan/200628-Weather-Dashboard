@@ -89,6 +89,8 @@ function displayWeatherData(data, uvData, cityName){
         .addClass("card")
         .append( cardContent);
 
+    $("#today").empty();
+
     $("#today").append(today);
 
     //add buttons for searched cities

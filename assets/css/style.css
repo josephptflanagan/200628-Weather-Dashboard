@@ -3,8 +3,26 @@ h1{
     text-align: center;
 }
 
-.btn{
+.search-btn{
     background-color: #0033cc;
     color: white;
     padding-top: 10px;
+}
+
+.btn{
+    display: block;
+    width: 100%;
+    padding:20px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    
+}
+.search-bar{
+    padding-bottom:10px;
+}
+
+.city{
+    border: 1px solid lightgray;
+    border-radius: 5px;
+
 }

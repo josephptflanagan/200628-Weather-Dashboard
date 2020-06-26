@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <!--BOOTSTRAP STYLE SHEET-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <!--ICON FONT-->
+    <link rel="stylesheet" href="assets/icon/icofont/icofont.min.css">
+    <!--CUSTOM STYLE SHEET-->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <header>
+        <div>
+            <h1 class="bg-dark text-light">Weather Dashboard</h1>
+        </div>
+    </header>
+    <main class = "container">
+        <div class="row">
+            <!--SEARCH BAR AND LOCATIONS START-->
+            <div class="col-3">
+                <div>
+                    <h5>Search for a City:</h5>
+                    <div class="input-group md-form form-sm form-2 pl-0">
+                        <input class="form-control my-0 py-0" type="text"placeholder="" aria-label="Search" id="search-bar"/>
+                        <button class="input-group-append btn" id="search-button">
+                            <i class="icofont-search-1"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="locations"></div>
+
+            </div>
+            <!--SEARCH BAR AND LOCATIONS END-->
+            <!--TODAY AND 5 DAY FORCAST START-->
+            <div class="col-9">
+                <div class="card" id="today"></div>
+                <div class="container" id="five-day"></div>
+            </div>
+            <!--TODAY AND 5 DAY FORCAST END-->
+        </div>
+
+    </main>
+    <!--JQUERY SCRIPT-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!--POPPER SCRIPT-->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+     <!--BOOTSTRAP SCRIPT-->
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!--CUSTOM SCRIPT-->
+    <script src="./assets/js/script.js"></script>
+</body>
+</html>

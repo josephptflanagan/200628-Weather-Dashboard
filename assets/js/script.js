@@ -1,3 +1,45 @@
+var idCounter = 0;
+var cities = [];
+
+function uvColor(uvIndex){
+
+    var color = ["magenta", "white"];
+
+    if (uvIndex >= 0 && uvIndex < 3){
+        color = ["green", "white"];
+    }
+    else if (uvIndex >= 3 && uvIndex < 6){
+        color = ["yellow", "black"];
+    }
+    else if (uvIndex >= 6 && uvIndex < 8){
+        color = ["orange", "white"];
+    }
+    else if (uvIndex >= 8 && uvIndex < 11){
+        color = ["red", "white"];
+    }
+        return color;
+    
+};
+
+function dateFormat(date){
+    var formattedDate = date.split("T")[0];
+    var dateArr = formattedDate.split("-");
+    return "(" + dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0] + ")";
+};
+
+function capitalize(cityName){
+    cityNameArr = cityName.split(" ");
+    tempName = "";
+    for(var i = 0; i < cityNameArr.length; i++){
+        cityNameArr[i] = cityNameArr[i][0].toUpperCase() + cityNameArr[i].substr(1);
+        tempName += cityNameArr[i];
+        if(i < cityNameArr.length-1){
+            tempName += " ";
+        }
+    }
+    return tempName;
+};
+
 function getWeatherData(cityName){
 
     //create the address to access the api for the chosen city
@@ -11,7 +53,7 @@ function getWeatherData(cityName){
                 var lat = data.coord.lat;
                 var lon = data.coord.lon;
 
-                var uvApiUrl = "http://api.openweathermap.org/data/2.5/uvi?appid=258563bcd408b087604452eb2e20b86f&lat=" + lat + "&lon=" + lon
+                var uvApiUrl = "https://api.openweathermap.org/data/2.5/uvi?appid=258563bcd408b087604452eb2e20b86f&lat=" + lat + "&lon=" + lon
                 
                 //fetch data from the weather api
                 fetch(uvApiUrl).then(function(response){
@@ -41,8 +83,8 @@ function getWeatherData(cityName){
 };
 
 function displayWeatherData(data, uvData, cityName){
-    console.log(data);
-    console.log(uvData);
+    //console.log(data);
+    //console.log(uvData);
     
     var temperature = data.main.temp;
     var humidity = data.main.humidity;
@@ -51,11 +93,9 @@ function displayWeatherData(data, uvData, cityName){
     var uv = uvData.value;
     var date = uvData.date_iso;
 
-    var iconUrl = "http://openweathermap.org/img/wn/"+ iconID + "@2x.png";
+    var iconUrl = "https://openweathermap.org/img/wn/"+ iconID + "@2x.png";
 
-    var formattedDate = date.split("T")[0];
-    var dateArr = formattedDate.split("-");
-    formattedDate = "(" + dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0] + ")"
+    var formattedDate = dateFormat(date);
 
     var icon = $("<img>")
         .attr("src", iconUrl);
@@ -74,7 +114,8 @@ function displayWeatherData(data, uvData, cityName){
         .text("Wind Speed: " + windSpeed + " MPH");
         
     var uvSpan = $("<span>")
-        .addClass("danger")
+        .css("background-color", uvColor(uv)[0])
+        .css("color", uvColor(uv)[1])
         .text(uv);
     
     var uvLevel = $("<p>")
@@ -96,10 +137,13 @@ function displayWeatherData(data, uvData, cityName){
     //add buttons for searched cities
     var cityButton = $("<button>")
         .addClass("btn")
+        .attr("id", "city-button-" + idCounter)
         .text(cityName);
 
     $("#locations").append(cityButton);
     
+    idCounter++;
+
 };
 
 //when the search bar is 
@@ -107,6 +151,8 @@ $("#search-button").on("click", function(){
 
     //get and store the city name from the search bar
     var cityName = $(this).siblings("#search-bar").val().trim();
+
+    cityName = capitalize(cityName);
     
     if(cityName == ""){
         return;
@@ -115,5 +161,15 @@ $("#search-button").on("click", function(){
     //Call the function that grabs the data
     getWeatherData(cityName);
     }
+
+});
+
+$("#city-button-").on("click", function(){
+    console.log("button pressed");
+    var cityName = $(this).val();
+
+    
+
+    //getWeatherData(cityName);
 
 });

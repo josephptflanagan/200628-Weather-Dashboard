@@ -48,6 +48,7 @@ function getWeatherData(cityName){
 
     //create the address to access the api for the chosen city
     var weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=258563bcd408b087604452eb2e20b86f"
+    var forecastUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=imperial&appid=258563bcd408b087604452eb2e20b86f"
     
     //fetch data from the weather api
     fetch(weatherApiUrl)
@@ -65,9 +66,22 @@ function getWeatherData(cityName){
                 fetch(uvApiUrl).then(function(response){
                     if (response.ok){
                         response.json().then(function(uvData){                 
-                                    
-                        //if data comes through, send it and the city name to display function
-                        compileWeatherData(data, uvData, cityName);
+                        
+                            fetch(forecastUrl).then(function(response){
+                                if (response.ok){
+                                    response.json().then(function(forecastData){ 
+
+                                        //if data comes through, send it to be compiled
+                                        compileWeatherData(data, uvData, forecastData, cityName);
+                                    })
+                                }
+                                else{
+                                    alert("Error: " + response.statusText);
+                                }
+                            })
+                            .catch(function(error){
+                                alert("Unable to Access Open Weather");
+                            })                    
 
                         })
                     }
@@ -87,12 +101,14 @@ function getWeatherData(cityName){
     .catch(function(error){
         alert("Unable to Access Open Weather");
     })
+
 };
 
 //takes in both data files and the user input name, and creates cityDataObjects
-function compileWeatherData(data, uvData, cityName){
-    //console.log(data);
-    //console.log(uvData);
+function compileWeatherData(data, uvData, forecastData, cityName){
+    console.log(data);
+    console.log(uvData);
+    console.log(forecastData);
 
     var temperature = data.main.temp;
     var humid = data.main.humidity;
@@ -287,28 +303,15 @@ function loadCities(){
     //parses saved cities and adds to cities array
     cities = JSON.parse(loadedCities);
 
-    //stores current time
-    var currentTime = moment();
-
     for(var i = 0;i < cities.length;i++){
 
-        //checks if 3 hours have passed since the saved locations have had their data 
-        //at open weather accessed. As the data only updates every three hours, it doesn't
-        //make sense to regather the data
-        if(currentTime.diff(cities[i].time) > 10800000){
-            console.log("a minimum of 3 hours have passed, grabbing more data");
-            getWeatherData(cities[i].name);
-        }
         //updates the city id so that ids and the counter are up to date for new locations
         cities[i].id = "city-" + idCounter;
         idCounter++;
-        //sends the currently loaded city to the display function
-        display(cities[i]);
-        
-    }
 
-    //used to make sure the new id numbers are assigned
-    saveCities();
+        getWeatherData(cities[i].name);
+
+    }
 
 };
 

@@ -50,7 +50,9 @@ function getWeatherData(cityName){
     var weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=258563bcd408b087604452eb2e20b86f"
     
     //fetch data from the weather api
-    fetch(weatherApiUrl).then(function(response){
+    fetch(weatherApiUrl)
+    
+    .then(function(response){
         if (response.ok){
             response.json().then(function(data){
                 
@@ -289,7 +291,7 @@ function loadCities(){
     var currentTime = moment();
 
     for(var i = 0;i < cities.length;i++){
-        //console.log(currentTime.diff(cities[i].time))
+
         //checks if 3 hours have passed since the saved locations have had their data 
         //at open weather accessed. As the data only updates every three hours, it doesn't
         //make sense to regather the data
@@ -302,10 +304,10 @@ function loadCities(){
         idCounter++;
         //sends the currently loaded city to the display function
         display(cities[i]);
-        //increments the idCounter as this city will not trigger the increasing count
         
     }
 
+    //used to make sure the new id numbers are assigned
     saveCities();
 
 };

@@ -135,8 +135,6 @@ function forecastCompiler(forecastData){
         var tempDate = forecastData.list[i].dt_txt;
         tempDate = dateFormat(tempDate, 1);
 
-        //console.log(tempDate);
-
         var iconId = forecastData.list[i].weather[0].icon;
         //console.log("iconId:" + iconId)
 
@@ -175,16 +173,16 @@ function forecastCompiler(forecastData){
 
 //takes in both data files and the user input name, and creates cityDataObjects
 function compileWeatherData(data, uvData, forecastData, cityName){
-    console.log(data);
-    console.log(uvData);
-    console.log(forecastData);
+    //console.log(data);
+    //console.log(uvData);
+    //console.log(forecastData);
 
     var temperature = data.main.temp;
     var humid = data.main.humidity;
     var windSpeed = data.wind.speed;
     var iconID = data.weather[0].icon;
     var ultraViolet = uvData.value;
-    var date = uvData.date_iso;
+    var date = moment().format();
 
     var idGenerator = "city-" + idCounter
     idCounter++;
@@ -192,6 +190,7 @@ function compileWeatherData(data, uvData, forecastData, cityName){
     var iconUrl = "https://openweathermap.org/img/wn/"+ iconID + "@2x.png";
 
     var formattedDate = dateFormat(date, 0);
+    console.log(formattedDate);
 
     var forecast = forecastCompiler(forecastData);
 

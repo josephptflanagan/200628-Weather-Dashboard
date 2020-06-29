@@ -138,8 +138,7 @@ function forecastCompiler(forecastData){
         //console.log(tempDate);
 
         var iconId = forecastData.list[i].weather[0].icon;
-        console.log("iconId:" + iconId)
-
+        //console.log("iconId:" + iconId)
 
         if(iconId[2] == "n"){
 
@@ -208,29 +207,18 @@ function compileWeatherData(data, uvData, forecastData, cityName){
         fiveDay: forecast
     };
     
-    console.log(cityDataObj.fiveDay);
-
-    //if the city is already in the array, update it
-    if(cities.length != 0){
-
-        var alreadySaved = false;
-
-        for(var i = 0;i < cities.length;i++){
-            if(cities[i].name == cityName){
-                alreadySaved = true;
-            }
+    var alreadyStored = false;
+    for(var i = 0; i < cities.length;i++){
+        if(cityDataObj.name == cities[i].name){
+            cities[i] = cityDataObj;
+            alreadyStored = true;
         }
-
-        if(!alreadySaved){
-            cities.push(cityDataObj);
-        }
-        
-    }  
-    //Otherwise, add it to the array
-    else if(cities.length == 0){
+    }
+    if(alreadyStored == false){
         cities.push(cityDataObj);
     }
-   
+    
+
     saveCities();
 
     display(cityDataObj);   
@@ -325,6 +313,8 @@ function displayForecastWeatherData(cityWeatherObject){
     //       day 4 date | day 4 icon | day 4 low | day 4 high | day 4 humidity |
     //       day 5 date | day 5 icon | day 5 low | day 5 high | day 5 humidity |
 
+    $("#five-day").empty();
+
     var forecastTitle = $("<h3>")
         .addClass("row")
         .text("5-Day Forecast: ");
@@ -400,12 +390,15 @@ function deleteCity(cityId){
 
 function saveCities(){
     //console.log("saveCities, cities: " + JSON.stringify(cities));
+    localStorage.clear();
     localStorage.setItem("cities", JSON.stringify(cities));
 };
 
 function loadCities(){
     //grabs saved cities
     var loadedCities = localStorage.getItem("cities");
+
+    localStorage.clear();
 
     if(!loadedCities){
         cities = [];
@@ -455,7 +448,8 @@ $("#locations").on("click", function(){
         //console.log("cityId: " + cityId);
         for(var i = 0; i < cities.length; i++){
             if(cities[i].id == cityId){
-                displayCurrentWeatherData(cities[i], source);
+               displayForecastWeatherData(cities[i]);
+               displayCurrentWeatherData(cities[i]);
             }
         }
         

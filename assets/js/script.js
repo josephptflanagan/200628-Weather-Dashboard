@@ -58,7 +58,7 @@ function getWeatherData(cityName){
 
     //create the address to access the api for the chosen city
     var weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=258563bcd408b087604452eb2e20b86f"
-    var forecastUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=imperial&appid=258563bcd408b087604452eb2e20b86f"
+    var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=imperial&appid=258563bcd408b087604452eb2e20b86f"
     
     //fetch data from the weather api
     fetch(weatherApiUrl)

@@ -3,6 +3,11 @@ h1{
     text-align: center;
 }
 
+h3{
+    padding: 5px;
+    margin-top: 10px;
+}
+
 .search-area{
     background-color: whitesmoke;
 }
@@ -19,7 +24,7 @@ h1{
     width: 100%;
     padding:20px;
     border: 1px solid lightgray;
-    border-radius: 5px;    
+    border-radius: 5px 0px 0px 5px;    
 }
 
 .delete-icon{
@@ -32,6 +37,7 @@ h1{
     height: 100%;
     background-color: red;
     color: white;
+    border-radius: 0px 5px 5px 0px;
 }
 
 .button-div{
@@ -59,4 +65,12 @@ span{
 
 .card{
     background-color: palegoldenrod;
+}
+
+.forecast-card{
+    background-color:rgb(11, 31, 209);
+    color: white;
+    padding: 5px 15px 5px 15px;
+    margin: 5px 10px 5px 10px;
+    border-radius: 5px;
 }

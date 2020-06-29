@@ -15,4 +15,4 @@ When citybuttons are pressed, they call for the display of their weather data.
 
 When the deletebuttons are pressed, the delete their button and remove the content from the save data.
 
-When data is loaded from the localStorage, it first checks when the data was created, if it has been more than 3 hours, it sends the name of the city up to search for new data. If this happens, new data is gathered, a new object is created, and when this object is found to have the same name as an existing dataobject, that old object is overwritten by the new one. Whether it goes throuh the process of getting new data or not, the objects are then pressed into the display function. 
+When data is loaded from the localStorage, it sends the name of the city up to search for new data. When this happens, new data is gathered, a new object is created, and when this object is found to have the same name as an existing dataobject, that old object is overwritten by the new one. Objects are then pressed into the display function. 

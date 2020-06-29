@@ -25,12 +25,15 @@ function dateFormat(date, type){
     
     if(type == 0){
         var formattedDate = date.split("T")[0];
+        var dateArr = formattedDate.split("-");
+        return "(" + dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0] + ")";
     }
     else{
         var formattedDate = date.split(" ")[0];
-    }
         var dateArr = formattedDate.split("-");
-        return "(" + dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0] + ")";
+        return dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0];
+    }
+        
 
 };
 
@@ -113,7 +116,7 @@ function getWeatherData(cityName){
 
 function forecastCompiler(forecastData){
     
-    console.log("first min temp: " + forecastData.list[0].main.temp_min);
+    //console.log("first min temp: " + forecastData.list[0].main.temp_min);
 
     var data = []; 
 
@@ -134,8 +137,17 @@ function forecastCompiler(forecastData){
 
         //console.log(tempDate);
 
-        var iconID = forecastData.list[i].weather.icon;
-        var iconUrl = "https://openweathermap.org/img/wn/"+ iconID + "@2x.png";
+        var iconId = forecastData.list[i].weather[0].icon;
+        console.log("iconId:" + iconId)
+
+
+        if(iconId[2] == "n"){
+
+            iconId = iconId[0] + iconId[1] + "d";
+
+        }
+
+        var iconUrl = "https://openweathermap.org/img/wn/"+ iconId + "@2x.png";
 
         var humid = forecastData.list[i].main.humidity;
 
@@ -162,7 +174,6 @@ function forecastCompiler(forecastData){
     return data;
 }
 
-
 //takes in both data files and the user input name, and creates cityDataObjects
 function compileWeatherData(data, uvData, forecastData, cityName){
     console.log(data);
@@ -176,12 +187,8 @@ function compileWeatherData(data, uvData, forecastData, cityName){
     var ultraViolet = uvData.value;
     var date = uvData.date_iso;
 
-    
-
     var idGenerator = "city-" + idCounter
-
     idCounter++;
-
 
     var iconUrl = "https://openweathermap.org/img/wn/"+ iconID + "@2x.png";
 
@@ -221,10 +228,7 @@ function compileWeatherData(data, uvData, forecastData, cityName){
     }  
     //Otherwise, add it to the array
     else if(cities.length == 0){
-        console.log("adding new city");
-        console.log("cities: " + cities);
         cities.push(cityDataObj);
-        console.log("cities: " + cities);
     }
    
     saveCities();
@@ -236,7 +240,7 @@ function compileWeatherData(data, uvData, forecastData, cityName){
 function display(cityDataObj){
     displayCityButtons(cityDataObj);
     displayCurrentWeatherData(cityDataObj);
-    //displayForecastWeatherData(cityDataObj);
+    displayForecastWeatherData(cityDataObj);
 };
 
 //creates the city buttons and adds them to the HTML
@@ -315,10 +319,48 @@ function displayCurrentWeatherData(cityWeatherObject){
 
 function displayForecastWeatherData(cityWeatherObject){
 
+    // DATA: day 1 date | day 1 icon | day 1 low | day 1 high | day 1 humidity |
+    //       day 2 date | day 2 icon | day 2 low | day 2 high | day 2 humidity |
+    //       day 3 date | day 3 icon | day 3 low | day 3 high | day 3 humidity |
+    //       day 4 date | day 4 icon | day 4 low | day 4 high | day 4 humidity |
+    //       day 5 date | day 5 icon | day 5 low | day 5 high | day 5 humidity |
+
+    var forecastTitle = $("<h3>")
+        .addClass("row")
+        .text("5-Day Forecast: ");
+
+    var datePlate = $("<div>")
+        .attr("id", "date-plate")
+        .addClass("row");
+
+    $("#five-day").append(forecastTitle, datePlate);
+
+    for(var i = 0; i < 5; i++){
+    
+        var date = $("<h5>")
+            .text(cityWeatherObject.fiveDay[i*5]);
+
+        var icon = $("<img>")
+            .attr("src", cityWeatherObject.fiveDay[i*5+1]);
+
+        var tempMax = $("<p>")
+            .text("High: " + cityWeatherObject.fiveDay[i*5+2] + " °F");
+
+        var tempMin = $("<p>")
+            .text("Low: " + cityWeatherObject.fiveDay[i*5+3] + " °F");
+
+        var Humidity = $("<p>")
+            .text("Humidity: " + cityWeatherObject.fiveDay[i*5+4] + " %");
+            
+        var forecastCard = $("<div>")
+            .addClass("forecast-card col-2")
+            .append(date, icon, tempMax, tempMin, Humidity);
+
+        $("#date-plate").append(forecastCard);
+
+    }
+
 };
-
-
-
 
 function deleteCity(cityId){
 

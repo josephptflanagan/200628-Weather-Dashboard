@@ -21,10 +21,17 @@ function uvColor(uvIndex){
     
 };
 
-function dateFormat(date){
-    var formattedDate = date.split("T")[0];
-    var dateArr = formattedDate.split("-");
-    return "(" + dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0] + ")";
+function dateFormat(date, type){
+    
+    if(type == 0){
+        var formattedDate = date.split("T")[0];
+    }
+    else{
+        var formattedDate = date.split(" ")[0];
+    }
+        var dateArr = formattedDate.split("-");
+        return "(" + dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0] + ")";
+
 };
 
 /* NEEDS REVISION
@@ -108,11 +115,6 @@ function forecastCompiler(forecastData){
     
     console.log("first min temp: " + forecastData.list[0].main.temp_min);
 
-    var low = [];
-    var high = [];
-    var date = [];
-    var icon = [];
-    var humidity = [];
     var data = []; 
 
     // DATA: day 1 date | day 1 icon | day 1 low | day 1 high | day 1 humidity |
@@ -121,16 +123,41 @@ function forecastCompiler(forecastData){
     //       day 4 date | day 4 icon | day 4 low | day 4 high | day 4 humidity |
     //       day 5 date | day 5 icon | day 5 low | day 5 high | day 5 humidity |
 
-    for(var i = 0; i < 5; i++){
+    for(var i = 0; i < 40; i = i+8){
         var min = null;
         var max = null;
+
+        //console.log("i:" + i)
+
+        var tempDate = forecastData.list[i].dt_txt;
+        tempDate = dateFormat(tempDate, 1);
+
+        //console.log(tempDate);
+
+        var iconID = forecastData.list[i].weather.icon;
+        var iconUrl = "https://openweathermap.org/img/wn/"+ iconID + "@2x.png";
+
+        var humid = forecastData.list[i].main.humidity;
+
         for(var j = 0; j < 8; j++){
-           if(min == null || min < forecastData.list[i*8+j].main.temp_min){
-               min = forecastData.list[i*8+j].main.temp_min
+           
+            //console.log("i+j: "+ (i+j));
+
+            if(min == null || min < forecastData.list[i+j].main.temp_min){
+               min = forecastData.list[i+j].main.temp_min
+            }
+
+           if(max == null || max > forecastData.list[i+j].main.temp_max){
+               max = forecastData.list[i+j].main.temp_max
            }
 
         }
-        low.push(min);
+        data.push(tempDate);
+        data.push(iconUrl);
+        data.push(min);
+        data.push(max);      
+        data.push(humid);
+        
     }
     return data;
 }
@@ -148,7 +175,7 @@ function compileWeatherData(data, uvData, forecastData, cityName){
     var iconID = data.weather[0].icon;
     var ultraViolet = uvData.value;
     var date = uvData.date_iso;
-    var timeCreated = moment();
+
     
 
     var idGenerator = "city-" + idCounter
@@ -158,7 +185,7 @@ function compileWeatherData(data, uvData, forecastData, cityName){
 
     var iconUrl = "https://openweathermap.org/img/wn/"+ iconID + "@2x.png";
 
-    var formattedDate = dateFormat(date);
+    var formattedDate = dateFormat(date, 0);
 
     var forecast = forecastCompiler(forecastData);
 
@@ -171,9 +198,11 @@ function compileWeatherData(data, uvData, forecastData, cityName){
         icon: iconUrl,
         uv: ultraViolet,
         date: formattedDate,
-        time: timeCreated
+        fiveDay: forecast
     };
     
+    console.log(cityDataObj.fiveDay);
+
     //if the city is already in the array, update it
     if(cities.length != 0){
 

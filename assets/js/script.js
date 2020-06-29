@@ -104,6 +104,38 @@ function getWeatherData(cityName){
 
 };
 
+function forecastCompiler(forecastData){
+    
+    console.log("first min temp: " + forecastData.list[0].main.temp_min);
+
+    var low = [];
+    var high = [];
+    var date = [];
+    var icon = [];
+    var humidity = [];
+    var data = []; 
+
+    // DATA: day 1 date | day 1 icon | day 1 low | day 1 high | day 1 humidity |
+    //       day 2 date | day 2 icon | day 2 low | day 2 high | day 2 humidity |
+    //       day 3 date | day 3 icon | day 3 low | day 3 high | day 3 humidity |
+    //       day 4 date | day 4 icon | day 4 low | day 4 high | day 4 humidity |
+    //       day 5 date | day 5 icon | day 5 low | day 5 high | day 5 humidity |
+
+    for(var i = 0; i < 5; i++){
+        var min = null;
+        var max = null;
+        for(var j = 0; j < 8; j++){
+           if(min == null || min < forecastData.list[i*8+j].main.temp_min){
+               min = forecastData.list[i*8+j].main.temp_min
+           }
+
+        }
+        low.push(min);
+    }
+    return data;
+}
+
+
 //takes in both data files and the user input name, and creates cityDataObjects
 function compileWeatherData(data, uvData, forecastData, cityName){
     console.log(data);
@@ -118,13 +150,17 @@ function compileWeatherData(data, uvData, forecastData, cityName){
     var date = uvData.date_iso;
     var timeCreated = moment();
     
+
     var idGenerator = "city-" + idCounter
 
     idCounter++;
 
+
     var iconUrl = "https://openweathermap.org/img/wn/"+ iconID + "@2x.png";
 
     var formattedDate = dateFormat(date);
+
+    var forecast = forecastCompiler(forecastData);
 
     var cityDataObj = {
         name: cityName,
@@ -257,6 +293,7 @@ function displayForecastWeatherData(cityWeatherObject){
 
 function deleteCity(cityId){
 
+    console.log("entered delete function");
     //console.log("deleteCity Accessed, cityID: " + cityId);
     var citySelected = $("#" + cityId).parent(".row").prevObject[0];
     //console.log(citySelected);
@@ -268,13 +305,17 @@ function deleteCity(cityId){
     for (var i = 0; i < cities.length; i++){
         //if cities[i].id doesn't match the value of the current city it is kept, thus
         //only the city being deleted is not added to the array
+        console.log("cities[i].id:" + cities[i].id + ", cityId: " + cityId);
         if (cities[i].id !==cityId){
             updatedCities.push(cities[i]);
         }
     }
-
+    console.log("updatedCities:" + updatedCities);
+    console.log("cities:" + cities);
     //reassign cities array to be the same as updatedcities
     cities = updatedCities;
+
+    console.log("cities:" + cities);
 
     saveCities();
 
@@ -304,15 +345,9 @@ function loadCities(){
     cities = JSON.parse(loadedCities);
 
     for(var i = 0;i < cities.length;i++){
-
-        //updates the city id so that ids and the counter are up to date for new locations
-        cities[i].id = "city-" + idCounter;
-        idCounter++;
-
-        getWeatherData(cities[i].name);
-
+        getWeatherData(cities[i].name);      
     }
-
+    
 };
 
 //when the search bar is 
@@ -325,7 +360,6 @@ $("#search-button").on("click", function(){
     //                                  will reopen route when it is fixed
     
     if(cityName != ""){
-        
         //control to keep from searching the same name twice
         for(var i = 0; i < cities.length; i++){
             if(cityName == cities[i].name){
@@ -350,7 +384,7 @@ $("#locations").on("click", function(){
         //console.log("cityId: " + cityId);
         for(var i = 0; i < cities.length; i++){
             if(cities[i].id == cityId){
-                displayCurrentWeatherData(cities[i]);
+                displayCurrentWeatherData(cities[i], source);
             }
         }
         

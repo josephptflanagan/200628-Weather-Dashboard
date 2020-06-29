@@ -190,7 +190,6 @@ function compileWeatherData(data, uvData, forecastData, cityName){
     var iconUrl = "https://openweathermap.org/img/wn/"+ iconID + "@2x.png";
 
     var formattedDate = dateFormat(date, 0);
-    console.log(formattedDate);
 
     var forecast = forecastCompiler(forecastData);
 
@@ -342,7 +341,7 @@ function displayForecastWeatherData(cityWeatherObject){
             .text("Humidity: " + cityWeatherObject.fiveDay[i*5+4] + " %");
             
         var forecastCard = $("<div>")
-            .addClass("forecast-card col-2")
+            .addClass("forecast-card col-lg-2")
             .append(date, icon, tempMax, tempMin, Humidity);
 
         $("#date-plate").append(forecastCard);

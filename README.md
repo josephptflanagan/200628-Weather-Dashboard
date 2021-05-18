@@ -1,4 +1,4 @@
-# 200628 Weather Dashboard
+# Weather Dashboard
 
 ## GitHub Repository URL
 https://github.com/josephptflanagan/200628-Weather-Dashboard

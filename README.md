@@ -1,13 +1,13 @@
 # Weather Dashboard
 
 ## GitHub Repository URL
-https://github.com/josephptflanagan/200628-Weather-Dashboard
+https://github.com/josephptflanagan/Weather-Dashboard
 
 ## Site URL
-https://josephptflanagan.github.io/200628-Weather-Dashboard/
+https://josephptflanagan.github.io/Weather-Dashboard/
 
 ## Screenshot
-https://github.com/josephptflanagan/200628-Weather-Dashboard/blob/master/assets/images/screenshot.png
+https://github.com/josephptflanagan/Weather-Dashboard/blob/master/assets/images/screenshot.png
 
 ### How it Works
 First Time Users of the site are welcomed by a header and a searchbar. Once they type a city name into the search bar and hit the search button the name is sent to the getWeatherData function that accesses the relavent data within the Open Weather Database. This data is used to contruct a cityDataOject. The cityDataObject is then added to the cities array and saved to local storage, after which it is sent to the display function which calls all three separate display functions (city cards, current day forecast, 5 day forecast). 
